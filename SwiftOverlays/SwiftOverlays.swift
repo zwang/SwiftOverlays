@@ -408,7 +408,7 @@ public class SwiftOverlays: NSObject {
     
     // MARK: Status bar notification
     
-    public class func showAnnoyingNotificationOnTopOfStatusBar(notificationView: UIView, duration: NSTimeInterval, animated: Bool = true) {
+    public class func showAnnoyingNotificationOnTopOfStatusBar(notificationView: UIView, duration: NSTimeInterval, animated: Bool = true, closeOnTap: Bool = true) {
         if bannerWindow == nil {
             bannerWindow = UIWindow()
             bannerWindow!.windowLevel = UIWindowLevelStatusBar + 1
@@ -417,10 +417,12 @@ public class SwiftOverlays: NSObject {
         
         bannerWindow!.frame = CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, notificationView.frame.size.height)
         bannerWindow!.hidden = false
-        
+
         let selector = #selector(closeAnnoyingNotificationOnTopOfStatusBar)
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: selector)
-        notificationView.addGestureRecognizer(gestureRecognizer)
+        if closeOnTap {
+            let gestureRecognizer = UITapGestureRecognizer(target: self, action: selector)
+            notificationView.addGestureRecognizer(gestureRecognizer)
+        }
         
         bannerWindow!.addSubview(notificationView)
         
